@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>读取命令行 on 逸阳</title>
+    <link>https://c0ding.github.io/tags/%E8%AF%BB%E5%8F%96%E5%91%BD%E4%BB%A4%E8%A1%8C/</link>
+    <description>Recent content in 读取命令行 on 逸阳</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 04 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://c0ding.github.io/tags/%E8%AF%BB%E5%8F%96%E5%91%BD%E4%BB%A4%E8%A1%8C/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go 读取命令行参数的3种方式</title>
+      <link>https://c0ding.github.io/archive/go-1/</link>
+      <pubDate>Tue, 04 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://c0ding.github.io/archive/go-1/</guid>
+      <description>对于初学者，想要尽快熟练掌握go语言，那就要大量的刻意练习，多以实践的方式为主。
+ 今天为大家推荐的刻意练习是：编写一个简单的数学计算器，读取命令行参数进行运算。
+本篇使用3种方式来读取命令行：  内置 os 包读取命令参数
+ 内置 flag 包读取命令参数
+ cli 框架读取命令参数
+  sad</description>
+    </item>
+    
+  </channel>
+</rss>
