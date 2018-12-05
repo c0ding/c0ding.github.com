@@ -45,7 +45,7 @@
 				"appid": "1613049289050283", 
 				"title": "Go 读取命令行参数的3种方式 | Gopher club - Come on together !!!", 
 				"images": [],
-				"pubDate": "2018-12-04T15:05:59"
+				"pubDate": "2018-12-05T09:35:55"
 			} 
 			</script>
 	</head>
@@ -88,6 +88,19 @@
 <li>
 <ul>
 <li><a href="#本篇使用3种方式来读取命令行">本篇使用3种方式来读取命令行：</a></li>
+<li><a href="#题目分析">题目分析</a></li>
+</ul></li>
+<li><a href="#1-os-获取命令行参数">1. OS 获取命令行参数</a>
+<ul>
+<li><a href="#实现代码">实现代码</a></li>
+</ul></li>
+<li><a href="#2-flag-获取命令行参数">2. flag 获取命令行参数</a>
+<ul>
+<li><a href="#实现代码-1">实现代码</a></li>
+</ul></li>
+<li><a href="#3-cli-框架">3. CLI 框架</a>
+<ul>
+<li><a href="#简单使用">简单使用</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -128,8 +141,8 @@
                             </div>
                         
                         <p>
-                                12 words
-                                1 minute read
+                                529 words
+                                3 minute read
                         </p>
 
                         
@@ -147,17 +160,220 @@
 <p>对于初学者，想要尽快熟练掌握go语言，那就要大量的刻意练习，多以实践的方式为主。</p>
 </blockquote>
 
-<p>今天为大家推荐的刻意练习是：编写一个简单的数学计算器，读取命令行参数进行运算。</p>
+<p>今天为大家推荐的刻意练习是：编写一个简单的数学计算器，读取命令行参数进行运算。如此既可以熟练语言，也为开发命令行应用起到入门效果。</p>
 
 <h3 id="本篇使用3种方式来读取命令行">本篇使用3种方式来读取命令行：</h3>
 
 <ul>
 <li>内置 os 包读取命令参数<br /></li>
 <li>内置 flag 包读取命令参数<br /></li>
-<li><a href="https://github.com/urfave/cli">cli 框架</a>读取命令参数<br /></li>
+<li><a href="https://github.com/urfave/cli">cli 框架</a>读取命令参数 比较流行<br /></li>
 </ul>
 
-<p>sad</p>
+<h3 id="题目分析">题目分析</h3>
+
+<p>实现 “简单数学计算” 这个功能，读取命令行参数：比如 <code>go run main.go add 1 2</code><br />
+除文件名之外的第一个元素：解析为进行数学运算符，比如： add、sub、mul、sqrt。<br />
+其余参数表示：进行操作的数值。</p>
+
+<h2 id="1-os-获取命令行参数">1. OS 获取命令行参数</h2>
+
+<p>os包基本使用</p>
+
+<pre><code class="language-golang"># 1.接受的参数，是一个切片类型
+os.Args
+
+# 2.将字符串数值转换为整型
+strconv.Atoi  
+
+# 3.整型转换为字符串
+strconv.Itoa
+
+# 4.将字符串数值转换为浮点型
+strconv.ParseFloat
+</code></pre>
+
+<h3 id="实现代码">实现代码</h3>
+
+<p>注意参与运算前先过滤异常情况，如参数的合法性、类型转换</p>
+
+<pre><code>func CalcByOs() error {
+    args := os.Args // 获取参数列表
+    if len(args) &lt; 3 || args == nil {  //过滤 异常情况，提示
+        help()
+        return nil
+    }
+    operate := args[1] // 获取运算符
+    switch operate {
+    case &quot;add&quot;:{
+            rt := 0
+            number_one, err1 := strconv.Atoi(args[2]) // 获取数值
+            number_two, err2 := strconv.Atoi(args[3])
+            if err1 == nil &amp;&amp; err2 == nil {	 
+                rt = number_one + number_two // 两个数值做相应的运算
+                fmt.Println(&quot;Result &quot;, rt)	// 打印结果
+            }
+        }
+    case &quot;sub&quot;:
+        {
+            rt := 0
+            number_one, err1 := strconv.Atoi(args[2])
+            number_two, err2 := strconv.Atoi(args[3])
+            if err1 == nil &amp;&amp; err2 == nil {
+                rt += number_one - number_two
+                fmt.Println(&quot;Result &quot;, rt)
+            }
+        }
+    case &quot;mul&quot;:
+        {
+            rt := 1
+            number_one, err1 := strconv.Atoi(args[2])
+            number_two, err2 := strconv.Atoi(args[3])
+            if err1 == nil &amp;&amp; err2 == nil {
+                rt = number_one * number_two
+                fmt.Println(&quot;Result &quot;, rt)
+            }
+        }
+    case &quot;sqrt&quot;:
+        {
+            rt := float64(0)
+            if len(args) != 3 {
+                fmt.Println(&quot;Usage: sqrt 2, return 1.4142135623730951&quot;)
+                return nil
+            }
+            number_one, err := strconv.ParseFloat(args[2], 64)
+            if err == nil {
+                rt = math.Sqrt(number_one)
+                fmt.Println(&quot;Result &quot;, rt)
+            }
+        }
+    default:
+        help() //错误提示
+
+    }
+    return nil
+}
+
+
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>$ go run main.go add 1 2
+Result  3
+
+$ go run main.go sub 1 2
+Result  -1
+
+$ go run main.go mul 10 20
+Result  200
+
+$ go run main.go sqrt 2
+Result  1.4142135623730951
+</code></pre>
+
+<h2 id="2-flag-获取命令行参数">2. flag 获取命令行参数</h2>
+
+<p>flag 包基本使用<br />
+1，定义变量<br />
+2，将变量与命令参数绑定<br />
+3，调用开始 解析命令<br />
+4，计算</p>
+
+<h3 id="实现代码-1">实现代码</h3>
+
+<pre><code>func CalcByFlag() error {
+	var operation string
+	var numOne float64
+	var numTwo float64
+	
+	// 参数依次说明：绑定变量，命令参数名，命令参数默认值，命令参数说明
+	flag.StringVar(&amp;operation, &quot;o&quot;, &quot;add&quot;, &quot;operation for this tool&quot;)
+	flag.Float64Var(&amp;numOne, &quot;n1&quot;, 0,&quot;The first number&quot;)
+	flag.Float64Var(&amp;numTwo, &quot;n2&quot;, 0, &quot;The second number&quot;)
+
+	// 解析命令参数
+	flag.Parse() 	
+	fmt.Println(numOne, numTwo)
+	if operation == &quot;add&quot; {
+		rt := numOne + numTwo
+		fmt.Println(&quot;Result &quot;, rt)
+	} else if operation == &quot;sub&quot; {
+		rt := numOne - numTwo
+		fmt.Println(&quot;Result &quot;, rt)
+	} else if operation == &quot;mul&quot; {
+		rt := numOne * numTwo
+		fmt.Println(&quot;Result &quot;, rt)
+	} else if operation == &quot;sqrt&quot; {
+		rt := math.Sqrt(numOne)
+		fmt.Println(&quot;Result &quot;, rt)
+	} else {
+		help()
+	}
+	return nil
+}
+</code></pre>
+
+<p>调用结果：</p>
+
+<pre><code>$ go run main.go -o add -n1 1 -n2 1.2
+Result  2.2
+
+$ go run main.go -o sub -n1 1 -n2 2
+Result  -1
+
+$ go run main.go -o mul -n1 1 -n2 20
+Result  20
+
+$ go run main.go -o sqrt -n1 2
+Result  1.4142135623730951
+</code></pre>
+
+<h2 id="3-cli-框架">3. CLI 框架</h2>
+
+<p>CLI 基本使用<br />
+1. 获取框架， <code>$go get github.com/urfave/cli</code><br />
+2. 实例化一个 cli APP<br />
+3. 设置 cli APP 的名字、介绍<br />
+4. 设置 cli APP 的命令参数
+5. 编写 cli APP 的功能<br />
+6. 运行监听 cli APP</p>
+
+<h3 id="简单使用">简单使用</h3>
+
+<pre><code>	app := cli.NewApp()
+	app.Name = &quot;cli框架&quot;
+	app.Usage = &quot;简单使用&quot;
+	app.Version = &quot;1.0&quot;
+	app.Action = func(c *cli.Context) error {
+		fmt.Println(&quot;我的cli app 动能&quot;)
+		return nil
+	}
+
+	app.Run(os.Args)
+
+</code></pre>
+
+<p>结果</p>
+
+<pre><code>$ go run main.go 
+我的cli app 动能
+
+$ go run main.go help
+
+NAME:
+   cli框架 - 简单使用
+USAGE:
+   main [global options] command [command options] [arguments...]
+
+VERSION:
+   1.0
+COMMANDS:
+     help, h  Shows a list of commands or help for one command
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
+</code></pre>
 
                             <h2> 本文链接：</h2>
                             <a hrsr='https://c0ding.github.io/archive/go-1/'>https://c0ding.github.io/archive/go-1/</a>
