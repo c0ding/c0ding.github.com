@@ -45,7 +45,7 @@
 				"appid": "1613049289050283", 
 				"title": "Go 读取命令行参数的3种方式 | Gopher club - Come on together !!!", 
 				"images": [],
-				"pubDate": "2018-12-05T09:35:55"
+				"pubDate": "2018-12-05T09:51:43"
 			} 
 			</script>
 	</head>
@@ -101,6 +101,7 @@
 <li><a href="#3-cli-框架">3. CLI 框架</a>
 <ul>
 <li><a href="#简单使用">简单使用</a></li>
+<li><a href="#代码实现">代码实现</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -141,8 +142,8 @@
                             </div>
                         
                         <p>
-                                529 words
-                                3 minute read
+                                779 words
+                                4 minute read
                         </p>
 
                         
@@ -335,7 +336,7 @@ Result  1.4142135623730951
 1. 获取框架， <code>$go get github.com/urfave/cli</code><br />
 2. 实例化一个 cli APP<br />
 3. 设置 cli APP 的名字、介绍<br />
-4. 设置 cli APP 的命令参数
+4. 设置 cli APP 的命令参数<br />
 5. 编写 cli APP 的功能<br />
 6. 运行监听 cli APP</p>
 
@@ -373,6 +374,91 @@ COMMANDS:
 GLOBAL OPTIONS:
    --help, -h     show help
    --version, -v  print the version
+</code></pre>
+
+<h3 id="代码实现">代码实现</h3>
+
+<pre><code>    //第1步
+    app := cli.NewApp() 
+    //第2步
+    app.Name = &quot;cli 计算器&quot;
+    app.Usage = &quot;基于 cli 框架的 命令行计算器&quot;
+    app.Version = &quot;0.1.0&quot;
+
+    //第3步
+    // 设置命令参数名，可设置多个，如：设置一个命令参数的 全称和简写
+    // 设置默认值
+    // 设置命令参数说明
+    app.Flags = []cli.Flag{
+        cli.StringFlag{
+            Name:  &quot;operation, o&quot;,
+            Value: &quot;add&quot;,
+            Usage: &quot;calc operation&quot;,
+        },
+        cli.Float64Flag{
+            Name:  &quot;numberone, n1&quot;,
+            Value: 0,
+            Usage: &quot;number one for operation&quot;,
+        },
+        cli.Float64Flag{
+            Name:  &quot;numbertwo, n2&quot;,
+            Value: 0,
+            Usage: &quot;number two for operation&quot;,
+        },
+    }
+    //第4步
+    app.Action = func(c *cli.Context) error {
+        operation := c.String(&quot;operation&quot;)
+        numberone := c.Float64(&quot;numberone&quot;)
+        numbertwo := c.Float64(&quot;numbertwo&quot;)
+        //fmt.Println(operation, numberone, numbertwo)
+        if operation == &quot;add&quot; {
+            rt := numberone + numbertwo
+            fmt.Println(&quot;Result &quot;, rt)
+        } else if operation == &quot;sub&quot; {
+            rt := numberone - numbertwo
+            fmt.Println(&quot;Result &quot;, rt)
+        } else if operation == &quot;mul&quot; {
+            rt := numberone * numbertwo
+            fmt.Println(&quot;Result &quot;, rt)
+        } else if operation == &quot;sqrt&quot; {
+            rt := math.Sqrt(numberone)
+            fmt.Println(&quot;Result &quot;, rt)
+        } else {
+            help()
+        }
+        return nil
+    }
+    //第5步
+    app.Run(os.Args)
+</code></pre>
+
+<p>结果</p>
+
+<pre><code>
+$ go run main.go -o sub -n1 34 -n2 33
+Result  1
+
+$ go run main.go -o add -n1 34 -n2 33
+Result  67
+
+$ go run main.go -h
+NAME:
+   cli 计算器 - 基于 cli 框架的 命令行计算器
+USAGE:
+   main [global options] command [command options] [arguments...]
+VERSION:
+   0.1.0
+COMMANDS:
+     help, h  Shows a list of commands or help for one command
+GLOBAL OPTIONS:
+   --operation value, -o value    calc operation (default: &quot;add&quot;)
+   --numberone value, --n1 value  number one for operation (default: 0)
+   --numbertwo value, --n2 value  number two for operation (default: 0)
+   --help, -h                     show help
+   --version, -v                  print the version
+
+
 </code></pre>
 
                             <h2> 本文链接：</h2>
