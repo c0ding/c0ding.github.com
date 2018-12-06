@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://c0ding.github.io/archive/fabric-1/</loc>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://c0ding.github.io/archive/go-1/</loc>
     <lastmod>2018-12-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -39,7 +46,7 @@
   
   <url>
     <loc>https://c0ding.github.io/archive/</loc>
-    <lastmod>2018-12-04T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -65,8 +72,22 @@
   </url>
   
   <url>
+    <loc>https://c0ding.github.io/tags/fabric/</loc>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://c0ding.github.io/tags/</loc>
     <lastmod>2018-12-04T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://c0ding.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/</loc>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -80,7 +101,7 @@
   
   <url>
     <loc>https://c0ding.github.io/</loc>
-    <lastmod>2018-12-04T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
